@@ -1,5 +1,6 @@
 package app.bugbank.drivers;
 
+import app.bugbank.tools.AppLogger;
 import org.openqa.selenium.WebDriver;
 
 public class DriverManager {
@@ -20,10 +21,10 @@ public class DriverManager {
             try {
                 driver.manage().deleteAllCookies();
             } catch (Exception e) {
-                System.err.printf("Erro ao limpar cookies: " + e.getMessage());
+                AppLogger.logInfo("Erro ao limpar cookies: " + e.getMessage());
             }
-            driver.quit();      // encerra sessão
-            THREAD_LOCAL.remove(); // limpa ThreadLocal
+            driver.quit();
+            THREAD_LOCAL.remove();
         }
     }
 }
