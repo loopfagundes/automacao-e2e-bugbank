@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class ConfigReader {
 
-    private static Properties properties;
+    private static final Properties properties;
 
     static {
         try {
@@ -22,4 +22,3 @@ public class ConfigReader {
         return System.getProperty(key.toLowerCase(), properties.getProperty(key));
     }
 }
-
