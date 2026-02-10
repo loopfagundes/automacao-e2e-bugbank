@@ -1,16 +1,31 @@
 package app.bugbank.runners;
 
+import app.bugbank.drivers.DriverManager;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = "app.bugbank",
+        glue = "app.bugbank.steps",
+        tags = "@Login",
         plugin = {
                 "pretty",
-                "html:target/cucumber-report.html"
-        },
-        monochrome = true
+                "summary",
+                "html:reports/report.html",
+                "json:reports/report.json"
+        }
 )
 public class WebRunnerTest extends AbstractTestNGCucumberTests {
+    @Override
+    @DataProvider(parallel = false)
+    public Object[][] scenarios() {
+        return super.scenarios();
+    }
+
+    @AfterSuite
+    public static void tearDown() {
+        DriverManager.quitDriver();
+    }
 }
