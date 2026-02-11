@@ -1,21 +1,20 @@
 pipeline {
-    agent any
-
-    tools {
-        maven 'Maven'
+    agent {
+        docker {
+            image 'maven:3.9.9-eclipse-temurin-21'
+            args '-v /root/.m2:/root/.m2'
+        }
     }
 
     stages {
         stage('Build & Test') {
             steps {
-                sh 'mvn clean test'
+                sh """
+                apt-get update
+                apt-get install -y chromium chromium-driver
+                mvn clean test -Dheadless=true
+                """
             }
-        }
-    }
-
-    post {
-        always {
-            junit '**/target/surefire-reports/*.xml'
         }
     }
 }
