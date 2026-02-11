@@ -1,17 +1,18 @@
 pipeline {
     agent any
 
-    environment {
-        HEADLESS = "${params.HEADLESS}"
-    }
-
     parameters {
         booleanParam(name: 'HEADLESS', defaultValue: true, description: 'Executar testes headless?')
+    }
+
+    environment {
+        HEADLESS = "${params.HEADLESS}"
     }
 
     tools {
         maven 'Maven'
         jdk 'JDK21'
+    }
 
     stages {
 
@@ -42,10 +43,10 @@ pipeline {
 
     post {
         success {
-            echo '🚀 Pipeline finalizado com sucesso!'
+            echo 'Pipeline finalizado com sucesso!'
         }
         failure {
-            echo '❌ Pipeline falhou!'
+            echo 'Pipeline falhou!'
         }
     }
 }
