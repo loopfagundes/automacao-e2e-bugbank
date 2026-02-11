@@ -1,30 +1,10 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.9.9-eclipse-temurin-21'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
-
-    parameters {
-        booleanParam(name: 'HEADLESS', defaultValue: true, description: 'Executar testes headless?')
-    }
-
-    environment {
-        HEADLESS = "${params.HEADLESS}"
-    }
+    agent any
 
     stages {
-
-        stage('Build') {
+        stage('Build & Test') {
             steps {
-                echo 'Compilando e rodando testes Cucumber'
-                sh """
-                mvn clean test \
-                  -Dcucumber.filter.tags="@Regressivo" \
-                  -Dheadless=${env.HEADLESS} \
-                  -DfailIfNoTests=false
-                """
+                sh 'mvn clean test'
             }
         }
     }
