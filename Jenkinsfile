@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.9.9-eclipse-temurin-21'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
 
     parameters {
         booleanParam(name: 'HEADLESS', defaultValue: true, description: 'Executar testes headless?')
@@ -9,18 +14,7 @@ pipeline {
         HEADLESS = "${params.HEADLESS}"
     }
 
-    tools {
-        maven 'Maven'
-        jdk 'JDK21'
-    }
-
     stages {
-
-        stage('Checkout') {
-            steps {
-                echo "Checking out branch: ${env.BRANCH_NAME}"
-            }
-        }
 
         stage('Build') {
             steps {
@@ -32,21 +26,12 @@ pipeline {
                   -DfailIfNoTests=false
                 """
             }
-            post {
-                always {
-                    echo "Arquivando relatórios de teste..."
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
         }
     }
 
     post {
-        success {
-            echo 'Pipeline finalizado com sucesso!'
-        }
-        failure {
-            echo 'Pipeline falhou!'
+        always {
+            junit '**/target/surefire-reports/*.xml'
         }
     }
 }
