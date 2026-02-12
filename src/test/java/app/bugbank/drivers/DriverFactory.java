@@ -16,7 +16,7 @@ import java.net.URL;
 
 public class DriverFactory {
 
-    private static final String GRID_URL = System.getProperty("grid.url", ConfigReader.get("GRID_URL"));
+    private static final String GRID_URL = System.getProperty("grid.url", ConfigReader.get("OUTSIDE_NETWORK"));
     private static final String[] WINDOW_SIZE = ConfigReader.get("WINDOW_SIZE_ACTIVE").split("x");
     private static final int WINDOW_WIDTH = Integer.parseInt(WINDOW_SIZE[0]);
     private static final int WINDOW_HEIGHT = Integer.parseInt(WINDOW_SIZE[1]);
