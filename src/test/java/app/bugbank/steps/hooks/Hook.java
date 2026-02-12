@@ -13,7 +13,7 @@ public class Hook {
     public void setup() {
         if (DriverManager.getDriver() == null) {
             DriverManager.setDriver(DriverFactory.createDriver());
-            DriverManager.getDriver().get(ConfigReader.get("URL"));
+            DriverManager.getDriver().get(ConfigReader.get("BASE_URL"));
         }
     }
 

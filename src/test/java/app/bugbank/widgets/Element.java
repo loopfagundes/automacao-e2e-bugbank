@@ -1,0 +1,50 @@
+package app.bugbank.widgets;
+
+import app.bugbank.tools.AppLogger;
+import app.bugbank.tools.JsonReader;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+
+import java.time.Duration;
+
+public class Element {
+
+    public static void click(WebElement locator) {
+        try {
+            if (locator.isDisplayed() && locator.isEnabled()) {
+                locator.click();
+            } else {
+                AppLogger.logWarning("O botão " + locator + " não recebeu um clique.");
+            }
+        } catch (InvalidElementStateException | NoSuchElementException | StaleElementReferenceException |
+                 TimeoutException e) {
+            throw new RuntimeException("[click] Erro na validação do elemento.", e);
+        }
+    }
+
+    public static void actionsClick(WebDriver driver, WebElement element) {
+        try {
+            new Actions(driver)
+                    .moveToElement(element)
+                    .pause(Duration.ofMillis(200))
+                    .click()
+                    .perform();
+        } catch (InvalidElementStateException | NoSuchElementException | StaleElementReferenceException |
+                 TimeoutException e) {
+            throw new RuntimeException("[ACTIONS CLICK] Falha ao clicar no elemento: "
+                    + element.toString(), e);
+        }
+    }
+
+    public static void sendKeysJson(WebElement locator, String parentNode, String key) {
+        try {
+            if (locator.isDisplayed()) {
+                locator.clear();
+                locator.sendKeys(JsonReader.getDataJson(parentNode, key));
+            }
+        } catch (InvalidElementStateException | NoSuchElementException | StaleElementReferenceException |
+                 TimeoutException e) {
+            throw new RuntimeException("[Assert] Erro na validação do elemento.", e);
+        }
+    }
+}

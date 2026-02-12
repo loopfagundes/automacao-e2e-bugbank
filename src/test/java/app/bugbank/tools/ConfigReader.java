@@ -14,7 +14,7 @@ public class ConfigReader {
             properties = new Properties();
             properties.load(file);
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao carregar config.properties");
+            throw new RuntimeException("Erro ao carregar setuprun.properties");
         }
     }
 

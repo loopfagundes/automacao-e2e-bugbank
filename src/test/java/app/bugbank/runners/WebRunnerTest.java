@@ -9,7 +9,7 @@ import org.testng.annotations.DataProvider;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "app.bugbank.steps",
-        tags = "@Login",
+        tags = "@Regressivo",
         plugin = {
                 "pretty",
                 "summary",

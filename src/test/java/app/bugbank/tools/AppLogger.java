@@ -9,4 +9,8 @@ public class AppLogger {
     public static void logInfo(String msg) {
         logger.log(Level.INFO, msg);
     }
+
+    public static void logWarning(String msg) {
+        logger.log(Level.WARNING, msg);
+    }
 }

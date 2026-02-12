@@ -1,0 +1,21 @@
+{
+  "AS": {
+    "Email": "anakinskywalker@tatooine.com",
+    "Nome": "Anakin Skywalker",
+    "Senha": "automacao2026@",
+    "ConfirmacaoSenha": "automacao2026@"
+  },
+
+  "OW": {
+    "Email": "obiwan@tatooine.com",
+    "Nome": "Obi Wan Kenobi",
+    "Senha": "automacao2026@",
+    "ConfirmacaoSenha": "automacao2026@"
+  },
+
+  "Login": {
+    "AS": "anakinskywalker@tatooine.com",
+    "OW": "obiwan@tatooine.com",
+    "Senha": "automacao2026@"
+  }
+}
