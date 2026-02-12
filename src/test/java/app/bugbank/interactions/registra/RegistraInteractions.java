@@ -9,7 +9,7 @@ import static app.bugbank.widgets.Element.*;
 public class RegistraInteractions extends RegistraPage {
 
     public void validaOUrlBase() {
-        String urlBase = ConfigReader.get("URL");
+        String urlBase = ConfigReader.get("BASE_URL");
         Assert.assertEquals(driver.getCurrentUrl(), urlBase, "URL base em desacordo");
     }
 
