@@ -59,13 +59,23 @@ public class DriverFactory {
 
     private static void configureOptions(Object options, boolean headless) {
         if (options instanceof ChromeOptions chrome) {
-            if (headless) chrome.addArguments("--headless=new", "--window-size=" + WINDOW_WIDTH + "," + WINDOW_HEIGHT);
-            chrome.addArguments("--start-maximized", "--disable-notifications", "--no-sandbox", "--disable-dev-shm-usage");
+            if (headless) chrome.addArguments(
+                    "--headless=new",
+                    "--window-size=" + WINDOW_WIDTH + "," + WINDOW_HEIGHT);
+            chrome.addArguments(
+                    "--start-maximized",
+                    "--disable-notifications",
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage");
         } else if (options instanceof FirefoxOptions firefox) {
-            if (headless) firefox.addArguments("-headless", "--window-size=" + WINDOW_WIDTH + "," + WINDOW_HEIGHT);
+            if (headless) firefox.addArguments(
+                    "-headless",
+                    "--window-size=" + WINDOW_WIDTH + "," + WINDOW_HEIGHT);
             firefox.addArguments("--start-maximized");
         } else if (options instanceof EdgeOptions edge) {
-            if (headless) edge.addArguments("--headless=new", "--window-size=" + WINDOW_WIDTH + "," + WINDOW_HEIGHT);
+            if (headless) edge.addArguments(
+                    "--headless=new",
+                    "--window-size=" + WINDOW_WIDTH + "," + WINDOW_HEIGHT);
             edge.addArguments("--start-maximized");
         }
     }
