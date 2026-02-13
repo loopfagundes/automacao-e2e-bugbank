@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class JsonReader {
 
-    private static JsonNode rootNode;
+    private static final JsonNode rootNode;
 
     static {
         ObjectMapper mapper = new ObjectMapper();
