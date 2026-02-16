@@ -2,7 +2,7 @@ services:
   selenium-hub:
     image: selenium/hub:latest
     ports:
-      - "4445:4444"
+      - "4444:4444"
 
   chrome:
     image: selenium/node-chrome:latest
