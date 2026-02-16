@@ -6,12 +6,20 @@ pipeline {
       steps { checkout scm }
     }
 
+    stage('Start Selenium Grid') {
+      steps {
+        sh '''
+          set -e
+          docker-compose up -d
+          docker ps
+        '''
+      }
+    }
+
     stage('Test (Maven via tar)') {
       steps {
         sh '''
           set -e
-
-          # empacota o workspace e envia pro container maven
           tar -czf - . | docker run --rm -i \
             maven:3.9.9-eclipse-temurin-21 \
             bash -lc '
@@ -21,6 +29,14 @@ pipeline {
             '
         '''
       }
+    }
+  }
+
+  post {
+    always {
+      sh '''
+        docker-compose down || true
+      '''
     }
   }
 }
