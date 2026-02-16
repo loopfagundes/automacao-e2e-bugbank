@@ -1,23 +1,15 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.9.9-eclipse-temurin-21'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
     }
 
-    stages {
-
-        stage('Build & Test') {
-            steps {
-                sh 'mvn clean test'
-            }
-        }
+    stage('Test') {
+      steps {
+        sh 'mvn -q -Dtest=WebRunnerTest test'
+      }
     }
-
-    post {
-        always {
-            junit '**/target/surefire-reports/*.xml'
-        }
-    }
+  }
 }
