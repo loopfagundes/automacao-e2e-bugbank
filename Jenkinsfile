@@ -6,6 +6,16 @@ pipeline {
       steps { checkout scm }
     }
 
+    stage('Debug workspace') {
+      steps {
+        sh '''
+          echo "PWD:" && pwd
+          echo "LIST ROOT:" && ls -la
+          echo "FIND POM:" && find . -maxdepth 4 -name pom.xml -print
+        '''
+      }
+    }
+
     stage('Test (Maven container)') {
       steps {
         sh '''
@@ -13,7 +23,7 @@ pipeline {
             -v "$PWD":/work \
             -w /work \
             maven:3.9.9-eclipse-temurin-21 \
-            mvn -q -Dtest=WebRunnerTest test
+            sh -lc "ls -la && find . -maxdepth 4 -name pom.xml -print"
         '''
       }
     }
