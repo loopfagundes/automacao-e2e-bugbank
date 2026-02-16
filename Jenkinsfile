@@ -10,7 +10,14 @@ pipeline {
       steps {
         sh '''
           set -e
+
+          # 1) sempre limpar antes (se já estiver rodando, derruba)
+          docker-compose down || true
+
+          # 2) subir o grid
           docker-compose up -d
+
+          # 3) mostrar status
           docker ps
         '''
       }
@@ -35,6 +42,7 @@ pipeline {
   post {
     always {
       sh '''
+        # sempre derruba no final (mesmo se falhar)
         docker-compose down || true
       '''
     }
