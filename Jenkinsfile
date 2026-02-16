@@ -6,9 +6,15 @@ pipeline {
       steps { checkout scm }
     }
 
-    stage('Test') {
+    stage('Test (Maven container)') {
       steps {
-        sh 'mvn -q -Dtest=WebRunnerTest test'
+        sh '''
+          docker run --rm \
+            -v "$PWD":/work \
+            -w /work \
+            maven:3.9.9-eclipse-temurin-21 \
+            mvn -q -Dtest=WebRunnerTest test
+        '''
       }
     }
   }
