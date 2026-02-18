@@ -31,12 +31,10 @@ pipeline {
       steps {
         sh '''
           set -e
-
           echo "Params:"
           echo "  BROWSER=${BROWSER}"
           echo "  HEADLESS=${HEADLESS}"
           echo "  CUCUMBER_TAGS=${CUCUMBER_TAGS}"
-
           tar -czf - . | docker run --rm -i \
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
@@ -46,7 +44,6 @@ pipeline {
               set -e
               mkdir -p /work && cd /work
               tar -xzf -
-
               mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
             '
         '''
