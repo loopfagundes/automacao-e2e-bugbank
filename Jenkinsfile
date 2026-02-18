@@ -46,6 +46,7 @@ pipeline {
               set -e
               mkdir -p /work && cd /work
               tar -xzf -
+              mvn clean
               mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
             '
         '''
