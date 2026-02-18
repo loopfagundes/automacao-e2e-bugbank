@@ -2,6 +2,7 @@ package app.bugbank.interactions.registra;
 
 import app.bugbank.pages.registra.RegistraPage;
 import app.bugbank.tools.ConfigReader;
+import app.bugbank.tools.ElementDataUtils;
 import org.testng.Assert;
 
 import static app.bugbank.widgets.Element.*;
@@ -31,7 +32,6 @@ public class RegistraInteractions extends RegistraPage {
 
     public void preencherConfirmacaoDaSenha(String usuario) {
         sendKeysJson(confirmacaoSenhaInput(), usuario, "ConfirmacaoSenha");
-
     }
 
     public void clicarToggleOSaldoDaConta() {
@@ -40,6 +40,18 @@ public class RegistraInteractions extends RegistraPage {
 
     public void realizarCadastrar() {
         click(cadastrarButton());
+    }
+
+    public void armazenaDetalhesDaConta(String userProp) {
+        switch (userProp.toLowerCase()) {
+            case "as", "ow" -> ElementDataUtils.extractAccountDetails(
+                    sucessoModalTexto(),
+                    userProp.toLowerCase(),
+                    "conta",
+                    "digito"
+            );
+            default -> throw new RuntimeException("User Prop inválido: " + userProp);
+        }
     }
 
     public void fecharModal() {
