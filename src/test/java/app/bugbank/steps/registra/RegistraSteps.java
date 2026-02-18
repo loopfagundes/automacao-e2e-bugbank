@@ -47,7 +47,7 @@ public class RegistraSteps {
         registraInteractions.realizarCadastrar();
     }
 
-    @Entao("armazeno a conta {string} do numero da conta e do digito")
+    @Entao("armazeno a conta e o dígito do usuário {string}")
     public void armazenoONumeroDaContaEDigito(String userProp) {
         registraInteractions.armazenaDetalhesDaConta(userProp);
     }

@@ -50,7 +50,7 @@ public class RegistraInteractions extends RegistraPage {
                     "conta",
                     "digito"
             );
-            default -> throw new RuntimeException("User Prop inválido: " + userProp);
+            default -> throw new RuntimeException("Usuário inválido: " + userProp);
         }
     }
 
