@@ -23,6 +23,7 @@ pipeline {
           docker-compose -f docker-compose.yml down || true
           docker ps -q --filter "publish=4444" | xargs -r docker rm -f || true
           docker-compose -f docker-compose.yml up -d
+          docker ps
         '''
       }
     }
