@@ -47,6 +47,11 @@ public class RegistraSteps {
         registraInteractions.realizarCadastrar();
     }
 
+    @Entao("armazeno a conta e o dígito do usuário {string}")
+    public void armazenoONumeroDaContaEDigito(String userProp) {
+        registraInteractions.armazenaDetalhesDaConta(userProp);
+    }
+
     @Entao("fecho o modal")
     public void fechoOModal() {
         registraInteractions.fecharModal();

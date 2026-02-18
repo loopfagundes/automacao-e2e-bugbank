@@ -14,8 +14,9 @@ Funcionalidade: Login
     E preencho o campo do nome "AS"
     E preencho o campo da senha "AS"
     E preencho novamente a senha no campo de confirmação de senha "AS"
-    Quando clico o toggle para criar a conta com saldo
-    Entao clico no botao cadastrar
+    E clico o toggle para criar a conta com saldo
+    Quando clico no botao cadastrar
+    Entao armazeno a conta e o dígito do usuário "AS"
     E fecho o modal
 
   @Registra_002
@@ -25,5 +26,6 @@ Funcionalidade: Login
     E preencho o campo do nome "OW"
     E preencho o campo da senha "OW"
     E preencho novamente a senha no campo de confirmação de senha "OW"
-    Entao clico no botao cadastrar
+    Quando clico no botao cadastrar
+    Entao armazeno a conta e o dígito do usuário "OW"
     E fecho o modal
