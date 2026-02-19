@@ -1,14 +1,16 @@
 package app.bugbank.widgets;
 
 import app.bugbank.tools.AppLogger;
-import app.bugbank.tools.ConfigReader;
 import app.bugbank.tools.JsonReader;
+import app.bugbank.tools.PropertiesManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
 
 public class Element {
+
+    private static final String FOLDER_PATH = "data";
 
     public static void click(WebElement locator) {
         try {
@@ -54,7 +56,7 @@ public class Element {
         String[] numberSeparator = accountNumber.split("-");
         String number = numberSeparator[0].replaceAll("[^0-9]", "");
         String numberDigit = numberSeparator[1].replaceAll("[^0-9]", "");
-        ConfigReader.setProperty("dataUser", nameProp, numberAccount, number);
-        ConfigReader.setProperty("dataUser", nameProp, digit, numberDigit);
+        PropertiesManager.setProperty(FOLDER_PATH, nameProp, numberAccount, number);
+        PropertiesManager.setProperty(FOLDER_PATH, nameProp, digit, numberDigit);
     }
 }

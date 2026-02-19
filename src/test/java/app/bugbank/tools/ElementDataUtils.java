@@ -15,8 +15,8 @@ public class ElementDataUtils {
         String[] numberSeparator = accountNumber.split("-");
         String number = numberSeparator[0].replaceAll("[^0-9]", "");
         String numberDigit = numberSeparator[1].replaceAll("[^0-9]", "");
-        ConfigReader.setProperty("data", nameProp, numberAccount, number);
-        ConfigReader.setProperty("data", nameProp, digit, numberDigit);
+        PropertiesManager.setProperty("data", nameProp, numberAccount, number);
+        PropertiesManager.setProperty("data", nameProp, digit, numberDigit);
     }
 
     public static void fakeValue(WebElement element, String nameFolder, String fileName, String key) {
@@ -27,7 +27,7 @@ public class ElementDataUtils {
         int fakeCent = Faker.instance().number().numberBetween(0, 99);
         String fakeValue = fakeCash + "." + fakeCent;
         element.sendKeys(fakeValue);
-        ConfigReader.setProperty(nameFolder, fileName, key, fakeValue);
+        PropertiesManager.setProperty(nameFolder, fileName, key, fakeValue);
     }
 
     public static void extractAndStore(WebElement element, String nameFolder, String fileName, String key) {
@@ -35,6 +35,6 @@ public class ElementDataUtils {
             throw new IllegalArgumentException("O elemento WebElement não pode ser null.");
         }
         String extractText = element.getText();
-        ConfigReader.setProperty(nameFolder, fileName, key, extractText);
+        PropertiesManager.setProperty(nameFolder, fileName, key, extractText);
     }
 }
