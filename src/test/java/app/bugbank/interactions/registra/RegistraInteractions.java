@@ -45,7 +45,7 @@ public class RegistraInteractions extends RegistraPage {
     public void armazenaDetalhesDaConta(String userProp) {
         switch (userProp.toLowerCase()) {
             case "as", "ow" -> ElementDataUtils.extractAccountDetails(
-                    sucessoModalTexto(),
+                    sucessoModalText(),
                     userProp.toLowerCase(),
                     "conta",
                     "digito"

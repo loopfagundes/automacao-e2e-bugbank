@@ -34,8 +34,8 @@ public class RegistraPage extends BasePage {
         return toBeClickable(By.xpath("//*[@id='__next'] //div[@class='card__register'] //button[@type='submit']"));
     }
 
-    public WebElement sucessoModalTexto() {
-        return toBeClickable(By.id("modalText"));
+    public WebElement sucessoModalText() {
+        return visibilityOf(By.id("modalText"));
     }
 
     public WebElement fechaModalButton() {
