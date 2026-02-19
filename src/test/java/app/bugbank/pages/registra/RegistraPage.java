@@ -27,7 +27,7 @@ public class RegistraPage extends BasePage {
     }
 
     public WebElement saldoContaToggle() {
-        return toBeClickable(By.cssSelector("[class='styles__Span-sc-1pngcbh-2 fLTrsw']"));
+        return driver.findElement(By.id("toggleAddBalance"));
     }
 
     public WebElement cadastrarButton() {

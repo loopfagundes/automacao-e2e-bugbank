@@ -35,7 +35,7 @@ public class RegistraInteractions extends RegistraPage {
     }
 
     public void clicarToggleOSaldoDaConta() {
-        actionsClick(driver, saldoContaToggle());
+        jsClick(driver, saldoContaToggle());
     }
 
     public void realizarCadastrar() {
