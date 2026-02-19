@@ -4,9 +4,6 @@ import app.bugbank.tools.AppLogger;
 import app.bugbank.tools.JsonReader;
 import app.bugbank.tools.PropertiesManager;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-
-import java.time.Duration;
 
 public class Element {
 
@@ -25,17 +22,13 @@ public class Element {
         }
     }
 
-    public static void actionsClick(WebDriver driver, WebElement element) {
+    public static void jsClick(WebDriver driver, WebElement locator) {
         try {
-            new Actions(driver)
-                    .moveToElement(element)
-                    .pause(Duration.ofMillis(200))
-                    .click()
-                    .perform();
+            JavascriptExecutor jse = (JavascriptExecutor) driver;
+            jse.executeScript("arguments[0].click();", locator);
         } catch (InvalidElementStateException | NoSuchElementException | StaleElementReferenceException |
                  TimeoutException e) {
-            throw new RuntimeException("[ACTIONS CLICK] Falha ao clicar no elemento: "
-                    + element.toString(), e);
+            throw new RuntimeException("[jse] Erro na validação do elemento.", e);
         }
     }
 
