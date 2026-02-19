@@ -8,3 +8,5 @@ target/
 .mvn/
 reports/
 docker-compose.override.yml
+src/test/resources/data/as.properties
+src/test/resources/data/ow.properties
