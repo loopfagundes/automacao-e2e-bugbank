@@ -1,21 +1,22 @@
 {
   "AS": {
     "Email": "anakinskywalker@tatooine.com",
-    "Nome": "Anakin Skywalker",
-    "Senha": "automacao2026@",
-    "ConfirmacaoSenha": "automacao2026@"
+    "Nome": "Anakin Skywalker"
   },
 
   "OW": {
     "Email": "obiwan@tatooine.com",
-    "Nome": "Obi Wan Kenobi",
-    "Senha": "automacao2026@",
-    "ConfirmacaoSenha": "automacao2026@"
+    "Nome": "Obi Wan Kenobi"
   },
 
   "Login": {
     "AS": "anakinskywalker@tatooine.com",
-    "OW": "obiwan@tatooine.com",
-    "Senha": "automacao2026@"
+    "OW": "obiwan@tatooine.com"
+  },
+
+  "Mensagem": {
+    "BemVindo": "bem vindo ao BugBank",
+    "TelaDeLogin": "O banco com bugs e falhas do seu jeito",
+    "ContaCriadaSucesso": "A conta  foi criada com sucesso"
   }
 }
