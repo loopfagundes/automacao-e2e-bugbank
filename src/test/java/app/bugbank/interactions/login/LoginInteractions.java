@@ -32,10 +32,11 @@ public class LoginInteractions extends LoginPage {
     }
 
     public void validaNomeDoUsuarioLogado(String usuario) {
+        String nomeDoUsuarioTexto = nomeDoUsuarioLogadoText().getText();
         String nomeDoUsuario = PropertiesManager.getProperty(usuario, "nome");
         String mensagem = "O nome do usuário não esta correto";
         ElementDataTool.setText(nomeDoUsuarioLogadoText(), usuario.toLowerCase(), "nome");
-        Assert.assertEquals(nomeDoUsuarioLogadoText().getText(), nomeDoUsuario, mensagem);
+        Assert.assertEquals(nomeDoUsuarioTexto, nomeDoUsuario, mensagem);
     }
 
     public void validaAContaEDigitoDoUsuario() {
