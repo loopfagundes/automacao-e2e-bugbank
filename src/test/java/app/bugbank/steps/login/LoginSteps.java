@@ -2,12 +2,9 @@ package app.bugbank.steps.login;
 
 import app.bugbank.interactions.login.LoginInteractions;
 import io.cucumber.java.pt.Entao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class LoginSteps {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginSteps.class);
     LoginInteractions loginInteractions = new LoginInteractions();
 
     @Entao("que preencho o campo de e-mail com o usuário {string}")
@@ -27,17 +24,17 @@ public class LoginSteps {
 
     @Entao("devo visualizar a tela de bem vindo")
     public void devoVisualizarATelaDeBemVindo() {
-        loginInteractions.validaTelaLogadobemVindo();
+        loginInteractions.validaTelaLogadoBemVindo();
     }
 
-    @Entao("o nome do usuário deve ser exibido na tela")
-    public void nomeDoUsuarioDeveSerExibidoNaTela() {
-        loginInteractions.validaNomeDoUsuarioLogado();
+    @Entao("o nome do usuário {string} deve ser exibido na tela")
+    public void nomeDoUsuarioDeveSerExibidoNaTela(String usuario) {
+        loginInteractions.validaNomeDoUsuarioLogado(usuario);
     }
 
     @Entao("a conta e o dígito do usuario devem ser exibidos na tela")
     public void contaEDigitoDoUsuarioExibidosNaTela() {
-        loginInteractions.validaAContaEDigitalDoUsuario();
+        loginInteractions.validaAContaEDigitoDoUsuario();
     }
 
     @Entao("o saldo do usuário deve ser exibido na tela")
