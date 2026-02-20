@@ -27,14 +27,9 @@ public class RegistraSteps {
         registraInteractions.preencherONome(usuario);
     }
 
-    @Entao("preencho o campo da senha {string}")
-    public void preenchoOCampoDaSenha(String usuario) {
-        registraInteractions.preencherASenha(usuario);
-    }
-
-    @Entao("preencho novamente a senha no campo de confirmação de senha {string}")
-    public void preenchoNovamenteASenha(String usuario) {
-        registraInteractions.preencherConfirmacaoDaSenha(usuario);
+    @Entao("preencho o campo da senha e confirmação de senha")
+    public void preenchoOCampoDaSenha() {
+        registraInteractions.preencherASenha();
     }
 
     @Entao("clico o toggle para criar a conta com saldo")
