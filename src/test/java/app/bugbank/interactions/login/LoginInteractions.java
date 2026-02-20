@@ -1,6 +1,10 @@
 package app.bugbank.interactions.login;
 
 import app.bugbank.pages.login.LoginPage;
+import app.bugbank.tools.ElementDataTool;
+import app.bugbank.tools.JsonReader;
+import app.bugbank.tools.PropertiesManager;
+import org.testng.Assert;
 
 import static app.bugbank.widgets.Element.*;
 
@@ -11,27 +15,37 @@ public class LoginInteractions extends LoginPage {
     }
 
     public void preencherInputDaSenha() {
-        sendKeysJson(inputSenha(), "Login", "Senha");
+        String senha = PropertiesManager.getProperty("data", "senha");
+        inputSenha().clear();
+        inputSenha().sendKeys(senha);
     }
 
     public void clicaParaAcessar() {
         click(acessarButton());
     }
 
-    public void validaTelaLogadobemVindo() {
-        System.out.println(">>>>>>> BEM VINDO >" + bemVindoText().getText());
+    public void validaTelaLogadoBemVindo() {
+        String bemVindoTexto = bemVindoText().getText();
+        String bemVindoContains = JsonReader.getDataJson("Mensagem", "BemVindo");
+        String mensagem = "O Texto não esta correto";
+        Assert.assertTrue(bemVindoTexto.contains(bemVindoContains), mensagem);
     }
 
-    public void validaNomeDoUsuarioLogado() {
-        System.out.println(">>>>>>>> NOME > " + nomeDoUsuarioLogadoText().getText());
+    public void validaNomeDoUsuarioLogado(String usuario) {
+        String nomeDoUsuario = PropertiesManager.getProperty(usuario, "nome");
+        String mensagem = "O nome do usuário não esta correto";
+        ElementDataTool.setText(nomeDoUsuarioLogadoText(), usuario.toLowerCase(), "nome");
+        Assert.assertEquals(nomeDoUsuarioLogadoText().getText(), nomeDoUsuario, mensagem);
     }
 
-    public void validaAContaEDigitalDoUsuario() {
-        System.out.println(">>>>>>>> CONTA E DIGITAL > " + contaEDigitalDoUsuarioText().getText());
+    public void validaAContaEDigitoDoUsuario() {
+        String mensagem = "Conta e o digito não estão visíveis na tela";
+        Assert.assertTrue(contaEDigitoDoUsuarioText().isDisplayed(), mensagem);
     }
 
     public void validaSaldoDoUsuario() {
-        System.out.println(">>>>>>>> SALDO > " + saldoDoUsuarioText().getText());
+        String mensagem = "O saldo não esta visível na tela";
+        Assert.assertTrue(saldoDoUsuarioText().isDisplayed(), mensagem);
     }
 
     public void clicaSairDaTelaDeLogin() {
@@ -39,6 +53,9 @@ public class LoginInteractions extends LoginPage {
     }
 
     public void validaATelaDeLogin() {
-        System.out.println(">>>>>>>>> LOGIN > " + telaDeLoginText().getText());
+        String telaDeLoginTexto = telaDeLoginText().getText();
+        String telaDeLoginJson = JsonReader.getDataJson("Mensagem", "TelaDeLogin");
+        String mensagem = "A pagina de login não esta correta";
+        Assert.assertEquals(telaDeLoginTexto, telaDeLoginJson, mensagem);
     }
 }
