@@ -26,17 +26,17 @@ public class LoginInteractions extends LoginPage {
 
     public void validaTelaLogadoBemVindo() {
         String bemVindoTexto = bemVindoText().getText();
-        String bemVindoContains = JsonReader.getDataJson("Mensagem", "BemVindo");
+        String bemVindoEsperado = JsonReader.getDataJson("Mensagem", "BemVindo");
         String mensagem = "O Texto não esta correto";
-        Assert.assertTrue(bemVindoTexto.contains(bemVindoContains), mensagem);
+        Assert.assertTrue(bemVindoTexto.contains(bemVindoEsperado), mensagem);
     }
 
     public void validaNomeDoUsuarioLogado(String usuario) {
-        String nomeDoUsuarioTexto = nomeDoUsuarioLogadoText().getText();
-        String nomeDoUsuario = PropertiesManager.getProperty(usuario, "nome");
-        String mensagem = "O nome do usuário não esta correto";
-        ElementDataTool.setText(nomeDoUsuarioLogadoText(), usuario.toLowerCase(), "nome");
-        Assert.assertEquals(nomeDoUsuarioTexto, nomeDoUsuario, mensagem);
+        String usuarioKey = usuario.toLowerCase();
+        ElementDataTool.setText(nomeDoUsuarioLogadoText(), usuarioKey, "nome");
+        String nomeEsperado = PropertiesManager.getProperty(usuarioKey, "nome");
+        String nomeNaTela = nomeDoUsuarioLogadoText().getText();
+        Assert.assertEquals(nomeNaTela, nomeEsperado, "O nome do usuário não está correto");
     }
 
     public void validaAContaEDigitoDoUsuario() {
@@ -55,8 +55,8 @@ public class LoginInteractions extends LoginPage {
 
     public void validaATelaDeLogin() {
         String telaDeLoginTexto = telaDeLoginText().getText();
-        String telaDeLoginJson = JsonReader.getDataJson("Mensagem", "TelaDeLogin");
+        String telaDeLoginEsperado = JsonReader.getDataJson("Mensagem", "TelaDeLogin");
         String mensagem = "A pagina de login não esta correta";
-        Assert.assertEquals(telaDeLoginTexto, telaDeLoginJson, mensagem);
+        Assert.assertEquals(telaDeLoginTexto, telaDeLoginEsperado, mensagem);
     }
 }
