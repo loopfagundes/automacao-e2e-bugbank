@@ -2,12 +2,9 @@ package app.bugbank.widgets;
 
 import app.bugbank.tools.AppLogger;
 import app.bugbank.tools.JsonReader;
-import app.bugbank.tools.PropertiesManager;
 import org.openqa.selenium.*;
 
 public class Element {
-
-    private static final String FOLDER_PATH = "data";
 
     public static void click(WebElement locator) {
         try {
@@ -42,14 +39,5 @@ public class Element {
                  TimeoutException e) {
             throw new RuntimeException("[Assert] Erro na validação do elemento.", e);
         }
-    }
-
-    public static void extractAccountDetails(WebElement element, String nameProp, String numberAccount, String digit) {
-        String accountNumber = element.getText();
-        String[] numberSeparator = accountNumber.split("-");
-        String number = numberSeparator[0].replaceAll("[^0-9]", "");
-        String numberDigit = numberSeparator[1].replaceAll("[^0-9]", "");
-        PropertiesManager.setProperty(FOLDER_PATH, nameProp, numberAccount, number);
-        PropertiesManager.setProperty(FOLDER_PATH, nameProp, digit, numberDigit);
     }
 }
