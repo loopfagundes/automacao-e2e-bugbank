@@ -2,7 +2,7 @@
 
 @Registra
 @Regressivo
-Funcionalidade: Login
+Funcionalidade: Fazer cadastrar uma nova conta de usuário
 
   Contexto:
     Dado que acesso o site do BugBank
