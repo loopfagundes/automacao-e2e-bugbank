@@ -27,15 +27,15 @@ public class RegistraPage extends BasePage {
     }
 
     public WebElement saldoContaToggle() {
-        return toBeClickable(By.cssSelector("[class='styles__Span-sc-1pngcbh-2 fLTrsw']"));
+        return driver.findElement(By.id("toggleAddBalance"));
     }
 
     public WebElement cadastrarButton() {
         return toBeClickable(By.xpath("//*[@id='__next'] //div[@class='card__register'] //button[@type='submit']"));
     }
 
-    public WebElement sucessoModalTexto() {
-        return toBeClickable(By.id("modalText"));
+    public WebElement sucessoModalText() {
+        return visibilityOf(By.id("modalText"));
     }
 
     public WebElement fechaModalButton() {

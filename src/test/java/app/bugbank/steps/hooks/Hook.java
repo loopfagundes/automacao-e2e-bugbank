@@ -25,4 +25,9 @@ public class Hook {
             scenario.attach(screenshot, "image/png", "Erro");
         }
     }
+
+    @AfterAll
+    public static void tearDownAll() {
+        DriverManager.quitDriver();
+    }
 }

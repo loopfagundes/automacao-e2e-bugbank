@@ -3,7 +3,7 @@ package app.bugbank.tools;
 import com.github.javafaker.Faker;
 import org.openqa.selenium.WebElement;
 
-public class ElementDataUtils {
+public class ElementDataTool {
 
     public static String toReplaceAll(WebElement element) {
         String ignoreNumbers = element.getText();
@@ -15,11 +15,11 @@ public class ElementDataUtils {
         String[] numberSeparator = accountNumber.split("-");
         String number = numberSeparator[0].replaceAll("[^0-9]", "");
         String numberDigit = numberSeparator[1].replaceAll("[^0-9]", "");
-        ConfigReader.setProperty("data", nameProp, numberAccount, number);
-        ConfigReader.setProperty("data", nameProp, digit, numberDigit);
+        PropertiesManager.setProperty(nameProp, numberAccount, number);
+        PropertiesManager.setProperty(nameProp, digit, numberDigit);
     }
 
-    public static void fakeValue(WebElement element, String nameFolder, String fileName, String key) {
+    public static void fakeValue(WebElement element, String fileName, String key) {
         if (element == null) {
             throw new IllegalArgumentException("O elemento WebElement não pode ser null.");
         }
@@ -27,14 +27,23 @@ public class ElementDataUtils {
         int fakeCent = Faker.instance().number().numberBetween(0, 99);
         String fakeValue = fakeCash + "." + fakeCent;
         element.sendKeys(fakeValue);
-        ConfigReader.setProperty(nameFolder, fileName, key, fakeValue);
+        PropertiesManager.setProperty(fileName, key, fakeValue);
     }
 
-    public static void extractAndStore(WebElement element, String nameFolder, String fileName, String key) {
+    public static void setText(WebElement element, String fileName, String key) {
         if (element == null) {
             throw new IllegalArgumentException("O elemento WebElement não pode ser null.");
         }
         String extractText = element.getText();
-        ConfigReader.setProperty(nameFolder, fileName, key, extractText);
+        PropertiesManager.setProperty(fileName, key, extractText);
+    }
+
+    public static String passwordGenerator() {
+        String senha = PropertiesManager.getProperty("data", "senha");
+        if (senha == null || senha.isBlank()) {
+            senha = Faker.instance().number().digits(5) + "@";
+            PropertiesManager.setProperty("data", "senha", senha);
+        }
+        return senha;
     }
 }
