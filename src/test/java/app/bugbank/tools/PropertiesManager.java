@@ -7,9 +7,10 @@ import java.util.Properties;
 public class PropertiesManager {
 
     private static final Path BASE_RESOURCES = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
+    private static final String FOLDER_DATA = "data";
 
-    private static Path resolveFile(String folder, String nameProp) {
-        return BASE_RESOURCES.resolve(folder).resolve(nameProp + ".properties");
+    private static Path resolveFile(String nameProp) {
+        return BASE_RESOURCES.resolve(FOLDER_DATA).resolve(nameProp + ".properties");
     }
 
     private static Properties loadOrCreate(Path filePath) {
@@ -28,8 +29,8 @@ public class PropertiesManager {
         }
     }
 
-    public static void setProperty(String folder, String nameProp, String key, String value) {
-        Path filePath = resolveFile(folder, nameProp);
+    public static void setProperty(String nameProp, String key, String value) {
+        Path filePath = resolveFile(nameProp);
         Properties props = loadOrCreate(filePath);
         props.setProperty(key, value);
         try (OutputStream out = Files.newOutputStream(filePath)) {
@@ -39,8 +40,8 @@ public class PropertiesManager {
         }
     }
 
-    public static String getProperty(String folder, String nameProp, String key) {
-        Path filePath = resolveFile(folder, nameProp);
+    public static String getProperty(String nameProp, String key) {
+        Path filePath = resolveFile(nameProp);
         Properties props = loadOrCreate(filePath);
         return props.getProperty(key);
     }
