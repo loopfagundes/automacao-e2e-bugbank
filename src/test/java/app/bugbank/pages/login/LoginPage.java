@@ -26,7 +26,7 @@ public class LoginPage extends BasePage {
         return visibilityOf(By.id("textName"));
     }
 
-    public WebElement contaEDigitalDoUsuarioText() {
+    public WebElement contaEDigitoDoUsuarioText() {
         return visibilityOf(By.id("textAccountNumber"));
     }
 
