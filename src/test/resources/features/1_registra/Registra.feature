@@ -12,8 +12,7 @@ Funcionalidade: Login
     Dado que clico o botao registrar
     Quando preencho o campo do email "AS"
     E preencho o campo do nome "AS"
-    E preencho o campo da senha "AS"
-    E preencho novamente a senha no campo de confirmação de senha "AS"
+    E preencho o campo da senha e confirmação de senha
     E clico o toggle para criar a conta com saldo
     Quando clico no botao cadastrar
     Entao armazeno a conta e o dígito do usuário "AS"
@@ -24,8 +23,7 @@ Funcionalidade: Login
     Dado que clico o botao registrar
     Quando preencho o campo do email "OW"
     E preencho o campo do nome "OW"
-    E preencho o campo da senha "OW"
-    E preencho novamente a senha no campo de confirmação de senha "OW"
+    E preencho o campo da senha e confirmação de senha
     Quando clico no botao cadastrar
     Entao armazeno a conta e o dígito do usuário "OW"
     E fecho o modal
