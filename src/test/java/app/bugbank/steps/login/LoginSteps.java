@@ -37,9 +37,9 @@ public class LoginSteps {
         loginInteractions.validaAContaEDigitoDoUsuario();
     }
 
-    @Entao("o saldo do usuário deve ser exibido na tela")
-    public void saldoDoUsuarioDeveSerExibidoNaTela() {
-        loginInteractions.validaSaldoDoUsuario();
+    @Entao("o saldo do usuário {string} deve ser exibido na tela")
+    public void saldoDoUsuarioDeveSerExibidoNaTela(String usuario) {
+        loginInteractions.validaSaldoDoUsuario(usuario);
     }
 
     @Entao("clico no botão sair")

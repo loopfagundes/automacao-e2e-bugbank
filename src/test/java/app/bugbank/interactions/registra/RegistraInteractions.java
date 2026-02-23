@@ -2,10 +2,11 @@ package app.bugbank.interactions.registra;
 
 import app.bugbank.pages.registra.RegistraPage;
 import app.bugbank.tools.ConfigReader;
-import app.bugbank.tools.ElementDataTool;
+import app.bugbank.tools.GlobalTool;
 import app.bugbank.tools.JsonReader;
 import org.testng.Assert;
 
+import static app.bugbank.tools.GlobalTool.*;
 import static app.bugbank.widgets.Element.*;
 
 public class RegistraInteractions extends RegistraPage {
@@ -28,7 +29,7 @@ public class RegistraInteractions extends RegistraPage {
     }
 
     public void preencherASenha() {
-        String senha = ElementDataTool.passwordGenerator();
+        String senha = GlobalTool.passwordGenerator();
         senhaInput().clear();
         senhaInput().sendKeys(senha);
         confirmacaoSenhaInput().clear();
@@ -45,7 +46,7 @@ public class RegistraInteractions extends RegistraPage {
 
     public void armazenaDetalhesDaConta(String userProp) {
         switch (userProp.toLowerCase()) {
-            case "as", "ow" -> ElementDataTool.extractAccountDetails(
+            case "as", "ow" -> GlobalTool.extractAccountDetails(
                     sucessoModalText(),
                     userProp.toLowerCase(),
                     "conta",
@@ -57,7 +58,7 @@ public class RegistraInteractions extends RegistraPage {
     }
 
     private void validaCriarAContaComSucesso() {
-        String modalTexto = ElementDataTool.toReplaceAll(sucessoModalText()).trim();
+        String modalTexto = GlobalTool.toReplaceAll(sucessoModalText()).trim();
         String contaCriada = JsonReader.getDataJson("Mensagem", "ContaCriadaSucesso");
         String mensagem = "Falha ao criar a conta";
         Assert.assertEquals(modalTexto, contaCriada, mensagem);
