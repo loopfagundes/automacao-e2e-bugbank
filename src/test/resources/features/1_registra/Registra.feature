@@ -1,13 +1,11 @@
 #language: pt
 
-@Registra
 @Regressivo
 Funcionalidade: Fazer cadastrar uma nova conta de usuário
 
   Contexto:
     Dado que acesso o site do BugBank
 
-  @Registra_001
   Cenário: Realizar o registro do primeiro usuario
     Dado que clico o botao registrar
     Quando preencho o campo do email "AS"
@@ -18,7 +16,6 @@ Funcionalidade: Fazer cadastrar uma nova conta de usuário
     Entao armazeno a conta e o dígito do usuário "AS"
     E fecho o modal
 
-  @Registra_002
   Cenário: Realizar o registro do segundo usuario
     Dado que clico o botao registrar
     Quando preencho o campo do email "OW"
