@@ -1,7 +1,6 @@
 package app.bugbank.widgets;
 
 import app.bugbank.tools.AppLogger;
-import app.bugbank.tools.JsonReader;
 import org.openqa.selenium.*;
 
 public class Element {
@@ -26,18 +25,6 @@ public class Element {
         } catch (InvalidElementStateException | NoSuchElementException | StaleElementReferenceException |
                  TimeoutException e) {
             throw new RuntimeException("[jse] Erro na validação do elemento.", e);
-        }
-    }
-
-    public static void sendKeysJson(WebElement locator, String parentNode, String key) {
-        try {
-            if (locator.isDisplayed()) {
-                locator.clear();
-                locator.sendKeys(JsonReader.getDataJson(parentNode, key));
-            }
-        } catch (InvalidElementStateException | NoSuchElementException | StaleElementReferenceException |
-                 TimeoutException e) {
-            throw new RuntimeException("[Assert] Erro na validação do elemento.", e);
         }
     }
 }
