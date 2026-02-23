@@ -1,11 +1,12 @@
 package app.bugbank.interactions.login;
 
 import app.bugbank.pages.login.LoginPage;
-import app.bugbank.tools.ElementDataTool;
+import app.bugbank.tools.GlobalTool;
 import app.bugbank.tools.JsonReader;
 import app.bugbank.tools.PropertiesManager;
 import org.testng.Assert;
 
+import static app.bugbank.tools.GlobalTool.*;
 import static app.bugbank.widgets.Element.*;
 
 public class LoginInteractions extends LoginPage {
@@ -25,15 +26,15 @@ public class LoginInteractions extends LoginPage {
     }
 
     public void validaTelaLogadoBemVindo() {
-        String bemVindoTexto = bemVindoText().getText();
+        String bemVindoAtual = bemVindoText().getText();
         String bemVindoEsperado = JsonReader.getDataJson("Mensagem", "BemVindo");
         String mensagem = "O Texto não esta correto";
-        Assert.assertTrue(bemVindoTexto.contains(bemVindoEsperado), mensagem);
+        Assert.assertTrue(bemVindoAtual.contains(bemVindoEsperado), mensagem);
     }
 
     public void validaNomeDoUsuarioLogado(String usuario) {
         String usuarioKey = usuario.toLowerCase();
-        ElementDataTool.setText(nomeDoUsuarioLogadoText(), usuarioKey, "nome");
+        GlobalTool.setText(nomeDoUsuarioLogadoText(), usuarioKey, "nome");
         String nomeEsperado = PropertiesManager.getProperty(usuarioKey, "nome");
         String nomeNaTela = nomeDoUsuarioLogadoText().getText();
         Assert.assertEquals(nomeNaTela, nomeEsperado, "O nome do usuário não está correto");
@@ -44,9 +45,12 @@ public class LoginInteractions extends LoginPage {
         Assert.assertTrue(contaEDigitoDoUsuarioText().isDisplayed(), mensagem);
     }
 
-    public void validaSaldoDoUsuario() {
+    public void validaSaldoDoUsuario(String usuario) {
+        String user = usuario.toLowerCase();
+        String saldoDaConta = saldoDoUsuarioText().getText();
         String mensagem = "O saldo não esta visível na tela";
         Assert.assertTrue(saldoDoUsuarioText().isDisplayed(), mensagem);
+        PropertiesManager.setProperty(user, "saldoDaConta", saldoDaConta);
     }
 
     public void clicaSairDaTelaDeLogin() {
