@@ -17,6 +17,7 @@
   "Mensagem": {
     "BemVindo": "bem vindo ao BugBank",
     "TelaDeLogin": "O banco com bugs e falhas do seu jeito",
-    "ContaCriadaSucesso": "A conta  foi criada com sucesso"
+    "ContaCriadaSucesso": "A conta  foi criada com sucesso",
+    "TransferenciaRealizadaComSucesso": "Transferencia realizada com sucesso"
   }
 }
