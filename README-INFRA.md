@@ -131,7 +131,8 @@ http://localhost:4445/ui
 -   Evita conflito de porta
 -   Permite rodar local e pipeline ao mesmo tempo
 
-  
+#### ⚠️ Adicionar `docker-compose.override.yml` no .gitignore para evitar conflitos no Jenkins
+
 ---  
 
 # 🔁 Subir Jenkins via Docker
@@ -312,5 +313,5 @@ docker-compose down
 Porta:
 ```
 4444 → Hub  
-4445 →  Local
+4445 → Local
 ```
