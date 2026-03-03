@@ -25,7 +25,7 @@ O objetivo é garantir qualidade, escalabilidade e execução automatizada em am
 
 ### Como configurar o ambiente❓
 
-📌 [**README - Infraestrutura - Automação BugBank**](README-INFRA.md)
+📌 [**README: Infraestrutura - Automação BugBank**](README-INFRA.md)
 
 ----------
 
@@ -76,7 +76,7 @@ docker-compose up -d
 ```
 Acessar UI:
 ```
-http://localhost:4445/ui
+http://localhost:4445/ui/
 ```
 Parar Grid:
 ```bash
