@@ -191,4 +191,4 @@ Disponíveis por 24h após execução.
 
 ### Evidência
 
-Em breve...
+![Report](src/test/resources/assets/img/screenshot_report.png)
