@@ -103,7 +103,7 @@ docker-compose down
 
 ### 🔹 Execução Local
 Criar um arquivo na raiz do projeto `docker-compose.override.yml`
-```dockerfile
+```yaml
 services:  
   selenium-hub:  
     image: selenium/hub:latest  
