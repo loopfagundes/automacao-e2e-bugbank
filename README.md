@@ -68,7 +68,7 @@ O objetivo é garantir qualidade, escalabilidade e execução automatizada em am
 
 ----------
 
-# 🐳 Selenium Grid (Execução Local)
+# 🧩 Selenium Grid (Execução Local)
 
 Subir Grid:
 ```bash
@@ -151,7 +151,7 @@ Esse endereço conecta ao Selenium Grid rodando via docker-compose local.
 
 ---
 
-### 🐳 JENKINS (Executando dentro de Container)
+### ⛅️ JENKINS (Executando dentro de Container)
 
 Quando executado via Jenkins (container Docker):
 
@@ -165,9 +165,9 @@ OUTSIDE_NETWORK=http://host.docker.internal:4444/wd/hub
 
 ---
 
-## 🔁 Como o DriverFactory resolve isso
+# 🔁 Como o DriverFactory resolve isso
 
-O DriverFactory usa:
+O `DriverFactory` usa:
 ```java
 private static final String GRID_URL =
 System.getProperty("grid.url", ConfigReader.get(value));
@@ -175,7 +175,7 @@ System.getProperty("grid.url", ConfigReader.get(value));
 
 Ordem de prioridade:
 
-- Usa valor do config.properties
+- Usar o valor do `setuprun.properties` na seção `GRID_URL REMOTO DO SELENIUM GRID`
 
 Isso permite flexibilidade para rodar local ou via CI.
 
