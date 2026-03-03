@@ -52,7 +52,7 @@ O projeto utiliza Selenium Grid via Docker para execução remota dos testes.
 - node-edge
 
 Criar um arquivo na raiz do projeto `docker-compose.yml`
-```dockerfile
+```yaml
 services:  
   selenium-hub:  
     image: selenium/hub:latest  
