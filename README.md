@@ -21,7 +21,7 @@ Projeto de automação de testes end-to-end para aplicações web utilizando:
 -    **Docker & Docker Compose**
 
 
-O objetivo é garantir qualidade, escalabilidade e execução automatizada em ambiente local e em pipeline CI.
+*O objetivo é garantir qualidade, escalabilidade e execução automatizada em ambiente local e em pipeline CI.*
 
 ### Como configurar o ambiente❓
 
@@ -55,7 +55,7 @@ O objetivo é garantir qualidade, escalabilidade e execução automatizada em am
 
 # ⚙️ Configuração do Ambiente
 
-## 🔹 Requisitos
+### 🔹 Requisitos
 
 -   Docker
 
@@ -97,7 +97,7 @@ mvn test -Dcucumber.filter.tags="@Regressivo"
 ```
 ----------
 
-# 🚀 Jenkins (CI/CD)
+# 🚀 Jenkins
 
 ### Subir Jenkins
 
