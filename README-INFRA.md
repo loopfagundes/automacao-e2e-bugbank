@@ -1,4 +1,5 @@
 
+
 # 🏗️ Infraestrutura - Automação BugBank
 
 Este documento explica como configurar o ambiente completo do zero.
@@ -19,8 +20,8 @@ Instalar:
 ---  
 # 🐳 Instalar Docker
 
-Windows / Mac:   
-[Download Docker Desktop](https://www.docker.com/products/docker-desktop)
+Windows / Mac:  
+[Download - Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 Linux:
 ```bash
@@ -37,9 +38,10 @@ docker --version
 ```bash
 docker-compose --version
 ```
----
+  
+---  
 
-# 🧩 Selenium Grid
+# 🧩 Selenium Grid (Local)
 
 O projeto utiliza Selenium Grid via Docker para execução remota dos testes.
 
@@ -50,7 +52,7 @@ O projeto utiliza Selenium Grid via Docker para execução remota dos testes.
 - node-edge
 
 Criar um arquivo na raiz do projeto `docker-compose.yml`
-```yaml
+```dockerfile
 services:  
   selenium-hub:  
     image: selenium/hub:latest  
@@ -93,12 +95,13 @@ Acessar UI:
 ```
 http://localhost:4444/ui/
 ```
+
 Parar:
 ```bash
 docker-compose down
 ```
 
-### 📂 Execução Local
+### 🔹 Execução Local
 Criar um arquivo na raiz do projeto `docker-compose.override.yml`
 ```dockerfile
 services:  
@@ -107,8 +110,10 @@ services:
     ports:  
       - "4445:4444"
 ```
-Porta:  
+Porta:
+```
 4445 → Hub
+```
 
 Subir:
 ```bash  
@@ -116,14 +121,17 @@ docker-compose up -d
 ```
 Acessar:
 ```
-http://localhost:4445/ui/
+http://localhost:4445/ui
 ```
+
 #### 🧠 Por que separar 4444 e 4445?
 
 -   4444 = CI (Jenkins)
 -   4445 = Local (dev)
 -   Evita conflito de porta
 -   Permite rodar local e pipeline ao mesmo tempo
+
+  
 ---  
 
 # 🔁 Subir Jenkins via Docker
@@ -139,9 +147,10 @@ docker run -d --name jenkins --restart=unless-stopped -p 8080:8080 -p 50000:5000
 O Jenkins utiliza o Docker do host através do socket:
 ```
 /var/run/docker.sock
-``` 
+```
+---  
 
-### 🔑 Acessar Jenkins
+## 🔑 Acessar Jenkins
 ```
 http://localhost:8080
 ```
@@ -150,12 +159,11 @@ Para pegar senha inicial:
 docker logs jenkins
 ```
 
-### 📌 Observação:
+#### 📌 Observação
 
 **SE:**
 
 - A imagem do Jenkins não tiver `docker` instalado
-
 - O comando `docker` não funcionar dentro do container
 
 **Não precisa** criar Dockerfile dentro do projeto
@@ -167,13 +175,13 @@ O **projeto automação** não deve misturar Jenkins Dockerfile.
 ### PASSO 1 - criar pasta `jenkins-docker`
 
 ```
-mkdir jenkins-docker  
-cd jenkins-docker
+mkdir  C:\jenkins-docker  
+cd  C:\jenkins-docker
 ```
 
 ### PASSO 2 - criar Dockerfile
 
-Criar um arquivo chamado `Dockerfile` com esse conteúdo:
+Criar um arquivo chamado **Dockerfile** com esse conteúdo:
 ```dockerfile
 FROM jenkins/jenkins:lts  
   
@@ -211,7 +219,7 @@ docker run -d --name jenkins --restart=unless-stopped -u root -p 8080:8080 -p 50
 4. Jenkinsfile será detectado automaticamente
 
 Cria um arquivo raiz do projeto `Jenkinsfile`
-```jenkins
+```groovy
 pipeline {  
   agent any  
   
@@ -252,7 +260,7 @@ pipeline {
 }
 ```
 
-#### **🔄 A pipeline sobe e derruba o Grid automaticamente.**
+### 🔄**A pipeline sobe e derruba o Grid automaticamente.**
 
 ---  
 
@@ -275,8 +283,8 @@ docker-compose -up -d
 docker-compose down
 ```
 
-Porta: 
+Porta:
 ```
 4444 → Hub  
-4445 → Local
+4445 →  Local
 ```
