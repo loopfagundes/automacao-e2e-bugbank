@@ -75,10 +75,25 @@ pipeline {
       sh '''
         docker-compose -f docker-compose.yml down || true
       '''
+    }
+  }
+
+  post {
+    always {
 
       archiveArtifacts artifacts: 'allure-results/**,reports/**', allowEmptyArchive: true
 
-      allure results: [[path: 'allure-results']]
+      script {
+        try {
+          allure(results: [[path: 'allure-results']])
+        } catch (e) {
+          echo "Allure plugin não configurado (CLI ausente). Pulando publish. Erro: ${e}"
+        }
+      }
+
+      sh '''
+        docker-compose -f docker-compose.yml down || true
+      '''
     }
   }
 }
