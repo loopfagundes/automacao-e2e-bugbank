@@ -53,6 +53,13 @@ public class LoginInteractions extends LoginPage {
         PropertiesManager.setProperty(user, "saldoDaConta", saldoDaConta);
     }
 
+    public void validaSaldoAnterior() {
+        String saldoDaConta = saldoDoUsuarioText().getText();
+        String mensagem = "[Usuario - OW] >> O saldo anterior não esta visível na tela";
+        Assert.assertTrue(saldoDoUsuarioText().isDisplayed(), mensagem);
+        PropertiesManager.setProperty("ow", "SaldoAnterior", saldoDaConta);
+    }
+
     public void clicaSairDaTelaDeLogin() {
         click(sairButton());
     }
