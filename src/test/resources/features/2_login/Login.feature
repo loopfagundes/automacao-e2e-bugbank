@@ -25,5 +25,6 @@ Funcionalidade: Efetura Login
     E o nome do usuário "OW" deve ser exibido na tela
     E a conta e o dígito do usuario devem ser exibidos na tela
     E o saldo do usuário "OW" deve ser exibido na tela
+    E verifica o saldo do usuario
     Quando clico no botão sair
     Entao valido que estou a tela de login

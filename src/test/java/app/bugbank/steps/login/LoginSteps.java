@@ -42,6 +42,11 @@ public class LoginSteps {
         loginInteractions.validaSaldoDoUsuario(usuario);
     }
 
+    @Entao("verifica o saldo do usuario")
+    public void verificaOSaldoDoUsuario() {
+        loginInteractions.validaSaldoAnterior();
+    }
+
     @Entao("clico no botão sair")
     public void clicoNoBotaoSair() {
         loginInteractions.clicaSairDaTelaDeLogin();
