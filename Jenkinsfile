@@ -21,10 +21,6 @@ pipeline {
         sh '''
           set -e
           docker-compose -f docker-compose.yml down || true
-
-          # opcional: mata qualquer container que esteja segurando 4444 (se sobrou algo antigo)
-          docker ps -q --filter publish=4444 | xargs -r docker rm -f
-
           docker-compose -f docker-compose.yml up -d
           docker ps
         '''
@@ -41,10 +37,7 @@ pipeline {
           echo "  HEADLESS=${HEADLESS}"
           echo "  CUCUMBER_TAGS=${CUCUMBER_TAGS}"
 
-          # limpa outputs antigos do workspace
-          rm -rf allure-results reports || true
-
-          CID=$(docker create -i \
+          tar -czf - . | docker run --rm -i \
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
             -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
@@ -53,18 +46,9 @@ pipeline {
               set -e
               mkdir -p /work && cd /work
               tar -xzf -
+
               mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
-            ')
-
-          # envia o repo pro container e executa
-          tar -czf - . | docker start -i "$CID"
-
-          # copia resultados de volta pro workspace
-          docker cp "$CID":/work/allure-results ./allure-results || true
-          docker cp "$CID":/work/reports ./reports || true
-
-          # remove container
-          docker rm -f "$CID" >/dev/null
+            '
         '''
       }
     }
@@ -72,15 +56,6 @@ pipeline {
 
   post {
     always {
-      sh '''
-        docker-compose -f docker-compose.yml down || true
-      '''
-    }
-  }
-
-  post {
-    always {
-
       archiveArtifacts artifacts: 'allure-results/**,reports/**', allowEmptyArchive: true
 
       script {
@@ -92,7 +67,7 @@ pipeline {
       }
 
       sh '''
-        docker-compose -f docker-compose.yml down || true
+        docker-compose -f docker-compose.yml down -v --remove-orphans || true
       '''
     }
   }
