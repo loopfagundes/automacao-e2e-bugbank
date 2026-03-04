@@ -46,7 +46,7 @@ pipeline {
               set -e
               mkdir -p /work && cd /work
               tar -xzf -
-
+              mvn clean
               mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
             '
         '''
@@ -56,15 +56,18 @@ pipeline {
 
   post {
     always {
-      archiveArtifacts artifacts: 'allure-results/**,reports/**', allowEmptyArchive: true
+      sh '''
+            set +e
+            rm -rf allure-report || true
 
-      script {
-        try {
-          allure(results: [[path: 'allure-results']])
-        } catch (e) {
-          echo "Allure plugin não configurado (CLI ausente). Pulando publish. Erro: ${e}"
-        }
-      }
+            # gera o report HTML (usa imagem com allure-cli)
+            docker run --rm \
+              -v "$PWD:/work" -w /work \
+              frankescobar/allure-docker-service:latest \
+              /bin/sh -lc "allure generate allure-results -o allure-report --clean" || true
+          '''
+
+          archiveArtifacts artifacts: 'allure-results/**,allure-report/**,reports/**', allowEmptyArchive: true
 
       sh '''
         docker-compose -f docker-compose.yml down -v --remove-orphans || true
