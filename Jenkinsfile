@@ -56,18 +56,10 @@ pipeline {
 
   post {
     always {
-      sh '''
-            set +e
-            rm -rf allure-report || true
-
-            # gera o report HTML (usa imagem com allure-cli)
-            docker run --rm \
-              -v "$PWD:/work" -w /work \
-              frankescobar/allure-docker-service:latest \
-              /bin/sh -lc "allure generate allure-results -o allure-report --clean" || true
-          '''
-
-          archiveArtifacts artifacts: 'allure-results/**,allure-report/**,reports/**', allowEmptyArchive: true
+      archiveArtifacts artifacts: 'allure-results/**,reports/**', allowEmptyArchive: true
+          allure([
+            results: [[path: 'allure-results']]
+          ])
 
       sh '''
         docker-compose -f docker-compose.yml down -v --remove-orphans || true
