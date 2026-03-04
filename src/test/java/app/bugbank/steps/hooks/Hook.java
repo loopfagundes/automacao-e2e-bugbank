@@ -19,10 +19,11 @@ public class Hook {
 
     @After
     public void afterScenario(Scenario scenario) {
-        if (scenario.isFailed()) {
+        if (scenario.isFailed() && DriverManager.getDriver() != null) {
             byte[] screenshot = ((TakesScreenshot) DriverManager.getDriver())
                     .getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", "Erro");
+            DriverManager.quitDriver();
         }
     }
 
