@@ -50,6 +50,14 @@ pipeline {
               mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
             '
         '''
+        post {
+          always {
+            allure includeProperties:
+            false,
+            jdk: '',
+            results: [[path: 'build/allure-results']]
+          }
+        }
       }
     }
   }
