@@ -14,8 +14,7 @@ import org.testng.annotations.DataProvider;
                 "pretty",
                 "summary",
                 "html:reports/report.html",
-                "json:reports/report.json",
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
+                "json:reports/report.json"
         }
 )
 public class WebRunnerTest extends AbstractTestNGCucumberTests {
