@@ -42,7 +42,7 @@ pipeline {
       steps {
         sh '''
           set -e
-          # Pasta para o cache do Maven no Jenkins
+
           mkdir -p ${HOME}/.m2/repository
 
           tar -czf - . | docker run --rm -i \
