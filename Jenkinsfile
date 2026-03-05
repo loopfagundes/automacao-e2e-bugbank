@@ -32,29 +32,36 @@ pipeline {
       steps {
         sh '''
           set -e
-          # Envia o projeto via tar, roda o maven e devolve os resultados via stdout para um arquivo local
+          # Criamos o arquivo vazio para garantir que o docker run possa escrever nele
+          touch results.tar.gz
+
           tar -czf - . | docker run --rm -i \
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
             -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
             ${MAVEN_IMAGE} \
             bash -c '
-              mkdir -p /work && cd /work
-              tar -xzf -
-              mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}" || true
-              tar -czf - allure-results target/allure-results 2>/dev/null || true
+              mkdir -p /work && cd /work > /dev/null
+              tar -xzf - > /dev/null
+
+              # Redireciona logs do Maven para o stderr para não sujar o arquivo tar
+              mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}" 1>&2 || true
+
+              # Envia apenas o tar dos resultados para o stdout
+              tar -czf - allure-results target/allure-results 2>/dev/null
             ' > results.tar.gz
 
-          # Extrai os resultados no workspace para o Allure Plugin encontrar
-          if [ -f results.tar.gz ]; then
+          # Verifica se o arquivo tem conteúdo antes de extrair
+          if [ -s results.tar.gz ]; then
             tar -xzf results.tar.gz
+            echo "Resultados extraídos com sucesso."
           else
-            echo "ERRO: results.tar.gz não foi gerado."
+            echo "Aviso: results.tar.gz está vazio. Verifique se os testes geraram arquivos."
           fi
         '''
       }
     }
-  }
+
 
   post {
     always {
