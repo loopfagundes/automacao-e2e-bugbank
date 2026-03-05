@@ -189,8 +189,12 @@ Isso permite flexibilidade para rodar local ou via CI.
 
 ### Cucumber reports:
 
-- Relatórios publicados automaticamente no [Reports Cucumber io](https://reports.cucumber.io)
-  - Disponíveis por 24h após execução.
+Relatórios publicados automaticamente no [Reports Cucumber io](https://reports.cucumber.io)
+  
+- **Disponíveis por 24h após execução.**
+
+No console:
+![console](src/test/resources/assets/img/console.png)
 
 ### Evidência
 
