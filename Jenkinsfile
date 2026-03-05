@@ -33,22 +33,14 @@ pipeline {
       steps {
         sh '''
           set -e
-          echo "Params:"
-          echo "  BROWSER=${BROWSER}"
-          echo "  HEADLESS=${HEADLESS}"
-          echo "  CUCUMBER_TAGS=${CUCUMBER_TAGS}"
-          tar -czf - . | docker run --rm -i \
+          docker run --rm \
+            -v "${WORKSPACE}:/work" \
+            -w /work \
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
             -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
             ${MAVEN_IMAGE} \
-            bash -lc '
-              set -e
-              mkdir -p /work && cd /work
-              tar -xzf -
-              mvn clean
-              mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
-            '
+            mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
         '''
       }
     }
