@@ -28,29 +28,40 @@ pipeline {
       }
     }
 
+    stage('Test') {
+      steps {
+        sh '''
+          set -e
+          # Envia o projeto via tar, roda o maven e devolve os resultados via stdout para um arquivo local
+          tar -czf - . | docker run --rm -i \
+            -e BROWSER="${BROWSER}" \
+            -e HEADLESS="${HEADLESS}" \
+            -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
+            ${MAVEN_IMAGE} \
+            bash -c '
+              mkdir -p /work && cd /work
+              tar -xzf -
+              mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}" || true
+              tar -czf - allure-results target/allure-results 2>/dev/null || true
+            ' > results.tar.gz
 
-        stage('Test') {
-          agent {
-            docker {
-              image "${MAVEN_IMAGE}"
-              // Isso mapeia automaticamente o workspace e mantém os arquivos
-              args '-v /var/run/docker.sock:/var/run/docker.sock'
-            }
-          }
-          steps {
-            sh 'mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}" -DBROWSER="${BROWSER}" -DHEADLESS="${HEADLESS}"'
-          }
-        }
-
+          # Extrai os resultados no workspace para o Allure Plugin encontrar
+          if [ -f results.tar.gz ]; then
+            tar -xzf results.tar.gz
+          else
+            echo "ERRO: results.tar.gz não foi gerado."
+          fi
+        '''
+      }
+    }
   }
 
-   post {
-       always {
-           sh 'docker-compose down || true'
-           allure includeProperties: false,
-                  jdk: '',
-                  results: [[path: 'allure-results'], [path: 'target/allure-results']]
-       }
-   }
-
+  post {
+    always {
+      sh 'docker-compose down || true'
+      allure includeProperties: false,
+             jdk: '',
+             results: [[path: 'allure-results'], [path: 'target/allure-results']]
+    }
+  }
 }
