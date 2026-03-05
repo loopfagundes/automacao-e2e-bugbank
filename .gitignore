@@ -11,3 +11,4 @@ docker-compose.override.yml
 src/test/resources/data/as.properties
 src/test/resources/data/ow.properties
 src/test/resources/data/data.properties
+allure-results
