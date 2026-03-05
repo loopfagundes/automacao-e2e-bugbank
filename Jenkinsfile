@@ -29,36 +29,28 @@ pipeline {
     }
 
 
-    stage('Test') {
+        stage('Test') {
+          agent {
+            docker {
+              image "${MAVEN_IMAGE}"
+              // Isso mapeia automaticamente o workspace e mantém os arquivos
+              args '-v /var/run/docker.sock:/var/run/docker.sock'
+            }
+          }
           steps {
-            sh '''
-              set -e
-              # 1. Empacota o projeto, envia para o container, roda o teste e devolve os resultados via tar
-              tar -czf - . | docker run --rm -i \
-                -e BROWSER="${BROWSER}" \
-                -e HEADLESS="${HEADLESS}" \
-                -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
-                ${MAVEN_IMAGE} \
-                bash -lc '
-                  mkdir -p /work && cd /work
-                  tar -xzf -
-                  mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
-                  # Após o teste, empacota as pastas de resultado e joga no stdout
-                  tar -czf - allure-results target/allure-results 2>/dev/null || true
-                ' | tar -xzf -
-            '''
+            sh 'mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}" -DBROWSER="${BROWSER}" -DHEADLESS="${HEADLESS}"'
           }
         }
+
   }
 
-  post {
-      always {
-          sh '''
-              docker-compose down || true
-          '''
-          allure includeProperties: false,
-                 jdk: '',
-                 results: [[path: 'allure-results']]
-      }
-  }
+   post {
+       always {
+           sh 'docker-compose down || true'
+           allure includeProperties: false,
+                  jdk: '',
+                  results: [[path: 'allure-results'], [path: 'target/allure-results']]
+       }
+   }
+
 }
