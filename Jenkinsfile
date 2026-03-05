@@ -50,23 +50,18 @@ pipeline {
               mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
             '
         '''
-        post {
-          always {
-            allure includeProperties:
-            false,
-            jdk: '',
-            results: [[path: 'build/allure-results']]
-          }
-        }
       }
     }
   }
 
   post {
-    always {
-      sh '''
-        docker-compose down || true
-      '''
-    }
+      always {
+          sh '''
+              docker-compose down || true
+          '''
+          allure includeProperties: false,
+                 jdk: '',
+                 results: [[path: 'build/allure-results']]
+      }
   }
 }
