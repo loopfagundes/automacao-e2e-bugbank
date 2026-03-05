@@ -38,21 +38,26 @@ pipeline {
           echo "  HEADLESS=${HEADLESS}"
           echo "  CUCUMBER_TAGS=${CUCUMBER_TAGS}"
 
-          tar -czf - . | docker run --rm -i \
+          # garante que a pasta exista no WORKSPACE do Jenkins
+          rm -rf allure-results || true
+          mkdir -p allure-results
+
+          docker run --rm \
+            -u 0:0 \
+            -v "$PWD:/work" -w /work \
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
             -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
             ${MAVEN_IMAGE} \
             bash -lc '
               set -e
-              mkdir -p /work && cd /work
-              tar -xzf -
-
-              mvn -q clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
-
-              echo "DEBUG: allure-results/ (raiz do projeto dentro do container):"
-              ls -la allure-results || true
+              mvn -q clean test \
+                -Dcucumber.filter.tags="${CUCUMBER_TAGS}" \
+                -Dallure.results.directory=allure-results
             '
+
+          echo "DEBUG (host/workspace):"
+          ls -la allure-results || true
         '''
       }
     }
