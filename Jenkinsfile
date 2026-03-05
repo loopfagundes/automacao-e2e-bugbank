@@ -38,7 +38,22 @@ pipeline {
           echo "  HEADLESS=${HEADLESS}"
           echo "  CUCUMBER_TAGS=${CUCUMBER_TAGS}"
 
-          # garante que a pasta exista no WORKSPACE do Jenkins
+          echo "DEBUG: workspace root:"
+          pwd
+          ls -la
+
+          echo "DEBUG: procurando pom.xml..."
+          POM_PATH=$(find . -maxdepth 4 -name pom.xml | head -n 1 || true)
+
+          if [ -z "$POM_PATH" ]; then
+            echo "ERRO: não achei pom.xml no workspace (até 4 níveis)."
+            exit 1
+          fi
+
+          PROJECT_DIR=$(dirname "$POM_PATH")
+          echo "OK: pom.xml encontrado em: $POM_PATH"
+          echo "OK: PROJECT_DIR: $PROJECT_DIR"
+
           rm -rf allure-results || true
           mkdir -p allure-results
 
@@ -48,15 +63,20 @@ pipeline {
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
             -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
+            -e PROJECT_DIR="$PROJECT_DIR" \
             ${MAVEN_IMAGE} \
             bash -lc '
               set -e
+              cd "/work/${PROJECT_DIR}"
+              echo "Dentro do container, rodando em: $(pwd)"
+              ls -la
+
               mvn -q clean test \
                 -Dcucumber.filter.tags="${CUCUMBER_TAGS}" \
-                -Dallure.results.directory=allure-results
+                -Dallure.results.directory=/work/allure-results
             '
 
-          echo "DEBUG (host/workspace):"
+          echo "DEBUG: allure-results no workspace:"
           ls -la allure-results || true
         '''
       }
