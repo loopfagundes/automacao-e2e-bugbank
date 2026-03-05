@@ -32,31 +32,24 @@ pipeline {
       steps {
         sh '''
           set -e
-          # Criamos o arquivo vazio para garantir que o docker run possa escrever nele
-          touch results.tar.gz
+          # Pasta para o cache do Maven no Jenkins
+          mkdir -p ${HOME}/.m2/repository
 
           tar -czf - . | docker run --rm -i \
+            -v "${HOME}/.m2/repository:/root/.m2/repository" \
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
             -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
             ${MAVEN_IMAGE} \
-            bash -c '
+            bash -c "
               mkdir -p /work && cd /work > /dev/null
               tar -xzf - > /dev/null
+              mvn clean test -Dcucumber.filter.tags='${CUCUMBER_TAGS}' 1>&2 || true
+              tar -czf - allure-results target/allure-results 2>/dev/null || true
+            " > results.tar.gz
 
-              # Redireciona logs do Maven para o stderr para não sujar o arquivo tar
-              mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}" 1>&2 || true
-
-              # Envia apenas o tar dos resultados para o stdout
-              tar -czf - allure-results target/allure-results 2>/dev/null
-            ' > results.tar.gz
-
-          # Verifica se o arquivo tem conteúdo antes de extrair
           if [ -s results.tar.gz ]; then
             tar -xzf results.tar.gz
-            echo "Resultados extraídos com sucesso."
-          else
-            echo "Aviso: results.tar.gz está vazio. Verifique se os testes geraram arquivos."
           fi
         '''
       }
