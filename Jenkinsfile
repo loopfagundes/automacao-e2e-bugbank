@@ -30,20 +30,25 @@ pipeline {
 
 
     stage('Test') {
-      steps {
-        sh '''
-          set -e
-          docker run --rm \
-            -v "${WORKSPACE}:/work" \
-            -w /work \
-            -e BROWSER="${BROWSER}" \
-            -e HEADLESS="${HEADLESS}" \
-            -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
-            ${MAVEN_IMAGE} \
-            mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
-        '''
-      }
-    }
+          steps {
+            sh '''
+              set -e
+              # 1. Empacota o projeto, envia para o container, roda o teste e devolve os resultados via tar
+              tar -czf - . | docker run --rm -i \
+                -e BROWSER="${BROWSER}" \
+                -e HEADLESS="${HEADLESS}" \
+                -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
+                ${MAVEN_IMAGE} \
+                bash -lc '
+                  mkdir -p /work && cd /work
+                  tar -xzf -
+                  mvn clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
+                  # Após o teste, empacota as pastas de resultado e joga no stdout
+                  tar -czf - allure-results target/allure-results 2>/dev/null || true
+                ' | tar -xzf -
+            '''
+          }
+        }
   }
 
   post {
