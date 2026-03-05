@@ -291,6 +291,54 @@ pipeline {
 
 ---  
 
+# 📊 Allure - Jenkins
+
+Substitua o `stage('Test')` e `post` por este:
+
+```groovy
+    stage('Test') {
+      steps {
+        sh '''
+          set -e
+          
+          mkdir -p ${HOME}/.m2/repository
+
+          tar -czf - . | docker run --rm -i \
+            -v "${HOME}/.m2/repository:/root/.m2/repository" \
+            -e BROWSER="${BROWSER}" \
+            -e HEADLESS="${HEADLESS}" \
+            -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
+            ${MAVEN_IMAGE} \
+            bash -c "
+              mkdir -p /work && cd /work > /dev/null
+              tar -xzf - > /dev/null
+              mvn clean test -Dcucumber.filter.tags='${CUCUMBER_TAGS}' 1>&2 || true
+              tar -czf - allure-results target/allure-results 2>/dev/null || true
+            " > results.tar.gz
+
+          if [ -s results.tar.gz ]; then
+            tar -xzf results.tar.gz
+          fi
+        '''
+      }
+    }
+```
+
+```groovy
+  post {
+    always {
+      sh 'docker-compose down || true'
+      allure includeProperties: false,
+             jdk: '',
+             results: [[path: 'allure-results'], [path: 'target/allure-results']]
+    }
+  }
+```
+
+### Evidências
+![Allure-Jenkins](src/test/resources/assets/img/allure-jenkins.png)
+![Allure Results Jenkins](src/test/resources/assets/img/allure-results-jenkins.png)
+
 ## ▶️ Comandos úteis: Jenkins e Selenium Grid no Docker
 
 Powershell ou terminal dentro do Docker:
