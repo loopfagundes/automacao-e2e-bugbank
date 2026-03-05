@@ -23,6 +23,7 @@ public class Hook {
             byte[] screenshot = ((TakesScreenshot) DriverManager.getDriver())
                     .getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", "Erro");
+            DriverManager.quitDriver();
         }
     }
 

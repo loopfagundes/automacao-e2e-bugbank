@@ -20,6 +20,8 @@ Projeto de automação de testes end-to-end para aplicações web utilizando:
 
 -    **Docker & Docker Compose**
 
+-   **Allure Reports**
+
 
 *O objetivo é garantir qualidade, escalabilidade e execução automatizada em ambiente local e em pipeline CI.*
 
@@ -183,12 +185,29 @@ Isso permite flexibilidade para rodar local ou via CI.
 
 # 📊 Relatórios
 
-Relatórios publicados automaticamente no:
+---
 
-https://reports.cucumber.io
+### Cucumber reports:
 
-Disponíveis por 24h após execução.
+Relatórios publicados automaticamente no [Reports Cucumber io](https://reports.cucumber.io)
+  
+- **Disponíveis por 24h após execução.**
+
+No console:
+
+![console](src/test/resources/assets/img/console.png)
 
 ### Evidência
 
-![Report](src/test/resources/assets/img/screenshot_report.png)
+![Report](src/test/resources/assets/img/cucumber-reports.png)
+
+---
+### Allure reports:
+No terminal:
+
+```bash
+allure serve allure-results
+```
+
+### Evidência
+![Allure](src/test/resources/assets/img/allure-results.png)
