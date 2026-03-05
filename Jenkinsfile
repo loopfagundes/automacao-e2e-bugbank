@@ -50,10 +50,26 @@ pipeline {
         '''
       }
     }
+
+    stage('Reports (Allure)') {
+      steps {
+        script {
+          allure([
+            reportBuildPolicy: 'ALWAYS',
+            results: [[path: 'allure-results']]
+          ])
+        }
+      }
+    }
   }
+
+
 
   post {
     always {
+    always {
+        archiveArtifacts artifacts: 'allure-results/**, reports/**', allowEmptyArchive: true
+      }
       sh '''
         docker-compose -f docker-compose.yml down -v --remove-orphans || true
       '''
