@@ -21,6 +21,7 @@ pipeline {
         sh '''
           set -e
           docker-compose -f docker-compose.yml down || true
+          docker ps -q --filter "publish=4444" | xargs -r docker rm -f || true
           docker-compose -f docker-compose.yml up -d
           docker ps
         '''
@@ -31,6 +32,7 @@ pipeline {
       steps {
         sh '''
           set -e
+
           echo "Params:"
           echo "  BROWSER=${BROWSER}"
           echo "  HEADLESS=${HEADLESS}"
@@ -45,7 +47,11 @@ pipeline {
               set -e
               mkdir -p /work && cd /work
               tar -xzf -
-              mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
+
+              mvn -q clean test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
+
+              echo "DEBUG: allure-results/ (raiz do projeto dentro do container):"
+              ls -la allure-results || true
             '
         '''
       }
@@ -55,6 +61,9 @@ pipeline {
       steps {
         script {
           allure([
+            includeProperties: false,
+            jdk: '',
+            properties: [],
             reportBuildPolicy: 'ALWAYS',
             results: [[path: 'allure-results']]
           ])
@@ -63,13 +72,10 @@ pipeline {
     }
   }
 
-
-
   post {
     always {
-    always {
-        archiveArtifacts artifacts: 'allure-results/**, reports/**', allowEmptyArchive: true
-      }
+      archiveArtifacts artifacts: 'allure-results/**,allure-report/**,reports/**,target/**', allowEmptyArchive: true
+
       sh '''
         docker-compose -f docker-compose.yml down -v --remove-orphans || true
       '''
