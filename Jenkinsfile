@@ -16,6 +16,16 @@ pipeline {
       steps { checkout scm }
     }
 
+    stage('Clean previous results') {
+    steps {
+        sh '''
+            set +e
+            rm -rf allure-results target/allure-results results.tar.gz
+            set -e
+        '''
+        }
+    }
+
     stage('Start Selenium Grid') {
       steps {
         sh '''
