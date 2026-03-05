@@ -54,7 +54,6 @@ pipeline {
           M2_CACHE="${HOME}/.m2/repository"
           mkdir -p "${M2_CACHE}"
 
-          # Envia workspace para o container Maven e traz o allure-results de volta via tar
           tar -czf - . | docker run --rm -i \
             -v "${M2_CACHE}:/root/.m2/repository" \
             -e BROWSER="${BROWSER}" \
@@ -70,29 +69,24 @@ pipeline {
 
               rm -rf "$ALLURE_OUT" target/allure-results || true
 
-              # Testes: não derruba o pipeline, mas mantém log no console
               mvn -B clean test \
                 -Dcucumber.filter.tags="$CUCUMBER_TAGS" \
                 -Dbrowser="$BROWSER" \
                 -Dheadless="$HEADLESS" \
                 1>&2 || true
 
-              # Padroniza saída do Allure em $ALLURE_OUT
               if [ -d target/allure-results ] && [ ! -d "$ALLURE_OUT" ]; then
                 mkdir -p "$ALLURE_OUT"
                 cp -R target/allure-results/. "$ALLURE_OUT/" 2>/dev/null || true
               fi
 
-              # Exporta só se existir algo
               if [ -d "$ALLURE_OUT" ] && [ "$(ls -A "$ALLURE_OUT" 2>/dev/null)" ]; then
                 tar -czf - "$ALLURE_OUT"
               else
-                # tar vazio (pra não quebrar o stage)
                 tar -czf - /dev/null 2>/dev/null || true
               fi
             ' > results.tar.gz
 
-          # Extrai no workspace do Jenkins
           if [ -s results.tar.gz ]; then
             tar -xzf results.tar.gz || true
           fi
