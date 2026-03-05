@@ -28,29 +28,33 @@ pipeline {
       }
     }
 
-    stage('Test') {
-      steps {
-        sh '''
-          set -e
-          touch results.tar.gz
-          tar -czf - . | docker run --rm -i \
-            -e BROWSER="${BROWSER}" \
-            -e HEADLESS="${HEADLESS}" \
-            -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
-            ${MAVEN_IMAGE} \
-            bash -c "
-              mkdir -p /work && cd /work > /dev/null
-              tar -xzf - > /dev/null
-              mvn clean test -Dcucumber.filter.tags='${CUCUMBER_TAGS}' 1>&2 || true
-              tar -czf - allure-results target/allure-results 2>/dev/null || true
-            " > results.tar.gz
+        stage('Test') {
+          steps {
+            sh '''
+              set -e
+              # Pasta para o cache do Maven no Jenkins
+              mkdir -p ${HOME}/.m2/repository
 
-          if [ -s results.tar.gz ]; then
-            tar -xzf results.tar.gz || echo 'Erro ao extrair resultados'
-          fi
-        '''
-      }
-    }
+              tar -czf - . | docker run --rm -i \
+                -v "${HOME}/.m2/repository:/root/.m2/repository" \
+                -e BROWSER="${BROWSER}" \
+                -e HEADLESS="${HEADLESS}" \
+                -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
+                ${MAVEN_IMAGE} \
+                bash -c "
+                  mkdir -p /work && cd /work > /dev/null
+                  tar -xzf - > /dev/null
+                  mvn clean test -Dcucumber.filter.tags='${CUCUMBER_TAGS}' 1>&2 || true
+                  tar -czf - allure-results target/allure-results 2>/dev/null || true
+                " > results.tar.gz
+
+              if [ -s results.tar.gz ]; then
+                tar -xzf results.tar.gz
+              fi
+            '''
+          }
+        }
+
   }
 
   post {
