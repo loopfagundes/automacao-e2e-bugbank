@@ -54,9 +54,13 @@ pipeline {
           M2_CACHE="${HOME}/.m2/repository"
           mkdir -p "${M2_CACHE}"
 
-          tar -czf - . | docker run --rm -i -v "${M2_CACHE}:/root/.m2/repository" -e BROWSER="${BROWSER}" -e HEADLESS="${HEADLESS}" \
-            -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" -e ALLURE_OUT="${ALLURE_OUT}" "${MAVEN_IMAGE}"
-
+          tar -czf - . | docker run --rm -i \
+            -v "${M2_CACHE}:/root/.m2/repository" \
+            -e BROWSER="${BROWSER}" \
+            -e HEADLESS="${HEADLESS}" \
+            -e CUCUMBER_TAGS="${CUCUMBER_TAGS}" \
+            -e ALLURE_OUT="${ALLURE_OUT}" \
+            "${MAVEN_IMAGE}" \
             bash -lc '
               set -e
 
@@ -65,7 +69,11 @@ pipeline {
 
               rm -rf "$ALLURE_OUT" target/allure-results || true
 
-              mvn -B clean test -Dcucumber.filter.tags="$CUCUMBER_TAGS" -Dbrowser="$BROWSER" -Dheadless="$HEADLESS" 1>&2 || true
+              mvn -B clean test \
+                -Dcucumber.filter.tags="$CUCUMBER_TAGS" \
+                -Dbrowser="$BROWSER" \
+                -Dheadless="$HEADLESS" \
+                1>&2 || true
 
               if [ -d target/allure-results ] && [ ! -d "$ALLURE_OUT" ]; then
                 mkdir -p "$ALLURE_OUT"
