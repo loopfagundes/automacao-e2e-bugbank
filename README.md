@@ -194,6 +194,7 @@ Relatórios publicados automaticamente no [Reports Cucumber io](https://reports.
 - **Disponíveis por 24h após execução.**
 
 No console:
+
 ![console](src/test/resources/assets/img/console.png)
 
 ### Evidência
