@@ -21,13 +21,11 @@ pipeline {
         sh '''
           set -e
           docker-compose -f docker-compose.yml down || true
-          docker ps -q --filter "publish=4444" | xargs -r docker rm -f || true
           docker-compose -f docker-compose.yml up -d
           docker ps
         '''
       }
     }
-
 
     stage('Test') {
       steps {
@@ -37,6 +35,7 @@ pipeline {
           echo "  BROWSER=${BROWSER}"
           echo "  HEADLESS=${HEADLESS}"
           echo "  CUCUMBER_TAGS=${CUCUMBER_TAGS}"
+
           tar -czf - . | docker run --rm -i \
             -e BROWSER="${BROWSER}" \
             -e HEADLESS="${HEADLESS}" \
@@ -46,7 +45,6 @@ pipeline {
               set -e
               mkdir -p /work && cd /work
               tar -xzf -
-              mvn clean
               mvn -q test -Dcucumber.filter.tags="${CUCUMBER_TAGS}"
             '
         '''
@@ -57,7 +55,7 @@ pipeline {
   post {
     always {
       sh '''
-        docker-compose down || true
+        docker-compose -f docker-compose.yml down -v --remove-orphans || true
       '''
     }
   }
